@@ -10,6 +10,16 @@ watched folders. The user wanted Focus-filterable notifications, which is
 why we ended up with a real `.app` bundle instead of `osascript display
 notification`.
 
+## Repository
+
+Public on GitHub: <https://github.com/theagitist/syncthing-notifier>.
+Licensed MIT. **Anything committed to the tracked tree is world-readable** —
+before any commit, sweep for personal identifiers: real folder IDs, the
+owner's macOS username, real bundle IDs, personal email addresses. The
+gitignored `config.env` and `folders.json` exist precisely to keep those
+out of the source tree. (The owner's specific patterns are listed in
+project memory, which lives outside the repo.)
+
 ## Layout
 
 | Path | Purpose |

@@ -29,6 +29,8 @@ title and message as argv.
 ## Install
 
 ```sh
+git clone https://github.com/theagitist/syncthing-notifier.git
+cd syncthing-notifier
 cp config.env.example config.env       # edit if you want a different bundle ID
 cp folders.json.example folders.json   # edit with your real Syncthing folder IDs
 ./install.sh
@@ -114,3 +116,7 @@ Notification permission entry can be cleared with
   `myID` from `/rest/system/status`.
 - If a remote is offline when you push changes, the notification fires when
   it next comes online and finishes pulling.
+
+## License
+
+MIT — see [LICENSE](LICENSE).
