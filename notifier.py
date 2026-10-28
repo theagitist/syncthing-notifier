@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Notify when remote devices finish receiving changes for watched folders."""
+import http.client
 import json
 import logging
 import os
@@ -25,7 +26,12 @@ NOTIFIER_APP = os.path.expanduser(
 NOTIFICATION_TITLE_FMT = "Syncthing: {folder_name}"
 NOTIFICATION_BODY_FMT = "{device_name} finished receiving updates"
 
-NETWORK_ERRORS = (urllib.error.URLError, ConnectionError, TimeoutError)
+NETWORK_ERRORS = (
+    urllib.error.URLError,
+    ConnectionError,
+    TimeoutError,
+    http.client.HTTPException,  # e.g. IncompleteRead when Syncthing restarts mid-poll
+)
 
 logging.basicConfig(
     level=logging.INFO,
@@ -194,6 +200,10 @@ def main():
             log.warning("event poll failed (%s); reconnecting in 5s", e)
             time.sleep(5)
             wait_for_syncthing(api_key)
+            # A restarted Syncthing renumbers events from 1, so the old last_id
+            # would block every future poll. Resync to its current event ID.
+            last_id = latest_event_id(api_key)
+            log.info("resumed from event id %d", last_id)
         except Exception as e:
             log.exception("unexpected error: %s", e)
             time.sleep(5)
